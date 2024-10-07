@@ -35,5 +35,5 @@ Select the activity which you want, Explore or Predict
 
 If everything goes well, you should Visiualize the data from Explore page or Predict the data from Predict page
 
-If you like the project . Give it a star  ⭐ and   ```[FORK]```
+If you like the project . Give it a star  ⭐ and   ```[FORK]``` https://github.com/kc-codes/Salary_Prediction_Tool_ML.git
 
