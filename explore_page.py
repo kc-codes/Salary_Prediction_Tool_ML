@@ -1,3 +1,4 @@
+#Importing libraries
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -5,12 +6,11 @@ import matplotlib.pyplot as plt
 def shorten_categories(categories, cutoff):
     categorical_map = {}
     for i in range(len(categories)):
-        if categories.values[i] >= cutoff:
+        if categories.values[i]>=cutoff:
             categorical_map[categories.index[i]] = categories.index[i]
         else:
             categorical_map[categories.index[i]] = 'Other'
-    return categorical_map
-
+    return categorical_map 
 
 def clean_experience(x):
     if x ==  'More than 50 years':
@@ -18,7 +18,6 @@ def clean_experience(x):
     if x == 'Less than 1 year':
         return 0.5
     return float(x)
-
 
 def clean_education(x):
     if 'Bachelor’s degree' in x:
@@ -29,16 +28,14 @@ def clean_education(x):
         return 'Post grad'
     return 'Less than a Bachelors'
 
-
 @st.cache
 def load_data():
-    df = pd.read_csv("survey_results_public.csv")
+    df = pd.read_csv("Data/survey_results_public.csv")
     df = df[["Country", "EdLevel", "YearsCodePro", "Employment", "ConvertedComp"]]
     df = df[df["ConvertedComp"].notnull()]
     df = df.dropna()
     df = df[df["Employment"] == "Employed full-time"]
     df = df.drop("Employment", axis=1)
-
     country_map = shorten_categories(df.Country.value_counts(), 400)
     df["Country"] = df["Country"].map(country_map)
     df = df[df["ConvertedComp"] <= 250000]
@@ -49,7 +46,6 @@ def load_data():
     df["EdLevel"] = df["EdLevel"].apply(clean_education)
     df = df.rename({"ConvertedComp": "Salary"}, axis=1)
     return df
-
 df = load_data()
 
 def show_explore_page():
@@ -57,34 +53,32 @@ def show_explore_page():
 
     st.write(
         """
-    ### Stack Overflow Developer Survey 2020
+    ### Stack Overflow Developer Survey
     """
     )
 
     data = df["Country"].value_counts()
 
     fig1, ax1 = plt.subplots()
-    ax1.pie(data, labels=data.index, autopct="%1.1f%%", shadow=True, startangle=90)
-    ax1.axis("equal")  # Equal aspect ratio ensures that pie is drawn as a circle.
+    ax1.pie(data, labels= data.index, autopct="%1.1f%%",shadow=True, startangle=90)
+    ax1.axis("equal") #Equal aspect ratio that pie is drawn as a circle.
 
-    st.write("""#### Number of Data from different countries""")
-
-    st.pyplot(fig1)
+    st.write(""" #### Number of Data from different Countries""")
     
+    st.pyplot(fig1)
+
     st.write(
         """
-    #### Mean Salary Based On Country
-    """
+    #### Mean Salary Based on Country"""
     )
 
     data = df.groupby(["Country"])["Salary"].mean().sort_values(ascending=True)
     st.bar_chart(data)
 
-    st.write(
-        """
-    #### Mean Salary Based On Experience
-    """
-    )
+    st.write("""
+    #### Mean Salary Based on Experience
+    """)
+    print(df.columns)
 
     data = df.groupby(["YearsCodePro"])["Salary"].mean().sort_values(ascending=True)
     st.line_chart(data)
