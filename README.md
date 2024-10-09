@@ -21,7 +21,7 @@ You must have Scikit Learn, Matplotlib Pandas and Numpy.
 
 This would create a serialized version of our model and save it as "saved_steps.pkl"
 
-2. Run app.py using below command to start Streamlit API
+2. Run app.py using below command to start Streamlit APP
 ```
 streamlit run app.py
 ```
